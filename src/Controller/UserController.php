@@ -4,12 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User\User;
 use App\Form\UserCreateForm;
+use App\Model\FlashMessage\LastActionFlashMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
@@ -18,10 +19,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class UserController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+    private LastActionFlashMessage $flashMessage;
+    private FlashBagInterface $flashBag;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        LastActionFlashMessage $flashMessage,
+        FlashBagInterface $flashBag
+    )
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
+        $this->flashMessage     = $flashMessage;
+        $this->flashBag         = $flashBag;
     }
 
     /**
@@ -44,6 +53,12 @@ class UserController extends AbstractController
 
             $this->entityManager->persist($user);
             $this->entityManager->flush();
+
+            $this->flashBag->set(...$this->flashMessage
+                ->getSuccessData(LastActionFlashMessage::ACTION_CREATE, 'user')
+            );
+
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render('@admin/user/create.html.twig', [
@@ -71,7 +86,7 @@ class UserController extends AbstractController
     /**
      * @Route("/remove/{id}", name="user_remove", requirements={"id"="\d+"})
      */
-    public function remove(Session $session, int $id): Response
+    public function remove(int $id): Response
     {
         /** @var User|null $user */
         $user = $this->entityManager->getRepository(User::class)->find($id);
@@ -83,19 +98,16 @@ class UserController extends AbstractController
         $this->entityManager->remove($user);
         $this->entityManager->flush();
 
-        $session->getFlashBag()->set(
-            'lastAction',
-            []
-        )
+        $this->flashBag->set(...$this->flashMessage->getSuccessData(
+            LastActionFlashMessage::ACTION_REMOVE,
+            'user'
+        ));
 
-        return $this->redirectToRoute('user_index', [
-            'message' => 'The user created!',
-            'status'
-        ]);
+        return $this->redirectToRoute('user_index');
     }
 
     /**
-     * @Route("/index", name="user_index")
+     * @Route("/", name="user_index")
      */
     public function index(): Response
     {
