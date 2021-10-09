@@ -8,10 +8,12 @@ class LastActionFlashMessage
 {
     const ACTION_REMOVE = 'removed';
     const ACTION_CREATE = 'created';
+    const ACTION_UPDATE = 'updated';
 
     const ACTIONS = [
         self::ACTION_REMOVE,
         self::ACTION_CREATE,
+        self::ACTION_UPDATE,
     ];
 
     public function getSuccessData(string $action, string $target): array

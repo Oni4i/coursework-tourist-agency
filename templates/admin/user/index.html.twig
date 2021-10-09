@@ -1,17 +1,20 @@
-<!doctype html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Users</title>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+{% extends "@admin/base.html.twig" %}
+
+{% block stylesheets %}
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+{% endblock %}
+
+{% block javascript %}
     <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-</head>
-<body>
+
+    <script>
+        $(document).ready( function () {
+        $('#table').DataTable();
+    } );
+    </script>
+{% endblock %}
+
+{% block body %}
     {% set lastAction = app.session.flashBag.get('lastAction') %}
 
     {% if lastAction is not empty %}
@@ -39,6 +42,7 @@
                     <td>{{ user.username }}</td>
                     <td>
                         <a href="{{ path("user_remove", {id: user.id}) }}" class="btn btn-danger">Remove</a>
+                        <a href="{{ path("user_update", {id: user.id}) }}" class="btn btn-warning">Update</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -46,11 +50,4 @@
             </thead>
         </table>
     </div>
-
-    <script>
-        $(document).ready( function () {
-            $('#table').DataTable();
-        } );
-    </script>
-</body>
-</html>
+{% endblock %}

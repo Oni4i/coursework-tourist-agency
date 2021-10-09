@@ -10,11 +10,12 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
 
-class UserCreateForm extends AbstractType
+class UserUpdateForm extends AbstractType
 {
     private UserRepository $userRepository;
     private RouterInterface $router;
@@ -33,21 +34,21 @@ class UserCreateForm extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'required'  => true,
+
             ])
             ->add('lastName', TextType::class, [
                 'required'  => true,
             ])
             ->add('username', TextType::class, [
-                'data'      => $this->getGeneratedUserLogin(),
                 'required'  => true,
             ])
             ->add('password', TextType::class, [
-                'data'      => $this->getGeneratedPassword(),
+                'data'      => '',
                 'required'  => true,
             ])
             ->add('point', EntityType::class, [
                 'class'     => Point::class,
-                'choice_label' => static function (Point $point) {
+                'choice_label' => function (Point $point) {
                     return \sprintf('%s, %s', $point->getCity(), $point->getAddress());
                 },
                 'required'  => true,
@@ -61,25 +62,11 @@ class UserCreateForm extends AbstractType
                 ]
             ])
             ->add('submit', SubmitType::class, [
-                'label'     => 'Create',
+                'label'     => 'Update',
                 'attr'      => [
                     'class' => 'btn btn-success'
                 ]
             ]);
-    }
-
-    public function getGeneratedUserLogin(): string
-    {
-        return \sprintf('user_%d', \strtotime('now'));
-    }
-
-    public function getGeneratedPassword(): string
-    {
-        return \sprintf(
-            '%d%d',
-            \random_int(0, 9999999),
-            \strtotime('now - 20 years')
-        );
     }
 
     public function configureOptions(OptionsResolver $resolver): void

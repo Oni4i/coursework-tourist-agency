@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User\User;
 use App\Form\UserCreateForm;
+use App\Form\UserUpdateForm;
 use App\Model\FlashMessage\LastActionFlashMessage;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -104,6 +105,41 @@ class UserController extends AbstractController
         ));
 
         return $this->redirectToRoute('user_index');
+    }
+
+    /**
+     * @Route("/update/{id}", name="user_update", requirements={"id"="\d+"})
+     */
+    public function update(Request $request, int $id, UserPasswordHasherInterface $passwordHasher): Response
+    {
+        /** @var User|null $user */
+        $user = $this->entityManager->getRepository(User::class)->find($id);
+
+        $form = $this->createForm(UserUpdateForm::class, $user);
+        $form->handleRequest($request);
+
+        if (!$user) {
+            throw $this->createNotFoundException('The user not found');
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $hashedPassword = $passwordHasher->hashPassword($user, $form->get('password')->getData());
+
+            $user->setPassword($hashedPassword);
+
+            $this->entityManager->flush();
+
+            $this->flashBag->set(...$this->flashMessage->getSuccessData(
+                LastActionFlashMessage::ACTION_UPDATE,
+                'user'
+            ));
+
+            return $this->redirectToRoute('user_index');
+        }
+
+        return $this->render('@admin/user/update.html.twig', [
+            'form' => $form->createView(),
+        ]);
     }
 
     /**
