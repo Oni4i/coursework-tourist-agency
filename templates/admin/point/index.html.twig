@@ -1,0 +1,7 @@
+{% include "@admin/components/crud/crud-index.html.twig" with {
+    target: "point",
+    entities: points,
+    createRouteName: "point_create",
+    removeRouteName: "point_remove",
+    updateRouteName: "point_update"
+} %}

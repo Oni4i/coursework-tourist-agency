@@ -10,7 +10,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ButtonType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\UrlType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Routing\RouterInterface;
@@ -34,7 +33,6 @@ class UserUpdateForm extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'required'  => true,
-
             ])
             ->add('lastName', TextType::class, [
                 'required'  => true,
@@ -49,23 +47,12 @@ class UserUpdateForm extends AbstractType
             ->add('point', EntityType::class, [
                 'class'     => Point::class,
                 'choice_label' => function (Point $point) {
-                    return \sprintf('%s, %s', $point->getCity(), $point->getAddress());
+                    return $point->getFullAddress();
                 },
                 'required'  => true,
             ])
-            ->add('cancel', ButtonType::class, [
-                'label'     => 'Cancel',
-                'attr'      => [
-                    'href'      => $this->router->generate('user_index'),
-                    'onClick'   => 'window.location = this.getAttribute("href")',
-                    'class' => 'btn btn-danger'
-                ]
-            ])
             ->add('submit', SubmitType::class, [
                 'label'     => 'Update',
-                'attr'      => [
-                    'class' => 'btn btn-success'
-                ]
             ]);
     }
 

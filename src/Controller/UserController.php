@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User\User;
+use App\Form\RemoveForm;
 use App\Form\UserCreateForm;
 use App\Form\UserUpdateForm;
 use App\Model\FlashMessage\LastActionFlashMessage;
@@ -68,43 +69,35 @@ class UserController extends AbstractController
     }
 
     /**
-     * @Route("/show/{id}", name="user_show", requirements={"id"="\d+"})
-     */
-    public function show(int $id): Response
-    {
-        /** @var User|null $user */
-        $user = $this->entityManager->getRepository(User::class)->find($id);
-
-        if (!$user) {
-            throw $this->createNotFoundException('The user not found');
-        }
-
-        return $this->render('@admin/user/show.html.twig', [
-            'user' => $user,
-        ]);
-    }
-
-    /**
      * @Route("/remove/{id}", name="user_remove", requirements={"id"="\d+"})
      */
-    public function remove(int $id): Response
+    public function remove(Request $request, int $id): Response
     {
         /** @var User|null $user */
         $user = $this->entityManager->getRepository(User::class)->find($id);
+
+        $form = $this->createForm(RemoveForm::class, $user);
+        $form->handleRequest($request);
 
         if (!$user) {
             throw $this->createNotFoundException('The user not found');
         }
 
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
+        if ($form->isSubmitted()) {
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
 
-        $this->flashBag->set(...$this->flashMessage->getSuccessData(
-            LastActionFlashMessage::ACTION_REMOVE,
-            'user'
-        ));
+            $this->flashBag->set(...$this->flashMessage->getSuccessData(
+                LastActionFlashMessage::ACTION_REMOVE,
+                'user'
+            ));
 
-        return $this->redirectToRoute('user_index');
+            return $this->redirectToRoute('user_index');
+        }
+
+        return $this->render('@admin/user/remove.html.twig', [
+            'form' => $form->createView()
+        ]);
     }
 
     /**

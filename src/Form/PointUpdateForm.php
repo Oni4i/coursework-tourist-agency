@@ -9,7 +9,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class PointCreateForm extends AbstractType
+class PointUpdateForm extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
@@ -21,7 +21,7 @@ class PointCreateForm extends AbstractType
                 'required'  => true,
             ])
             ->add('submit', SubmitType::class, [
-                'label'     => 'Create',
+                'label'     => 'Update',
             ]);
     }
 

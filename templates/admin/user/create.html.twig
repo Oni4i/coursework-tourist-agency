@@ -1,5 +1,4 @@
-{% extends "@admin/base.html.twig" %}
-
-{% block body %}
-    {{ form(form) }}
-{% endblock %}
+{% include "@admin/components/crud/crud-create.html.twig" with {
+    form: form,
+    cancelRouteName: "user_index"
+} %}

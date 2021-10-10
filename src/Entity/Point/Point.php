@@ -3,6 +3,7 @@
 namespace App\Entity\Point;
 
 use App\Entity\User\User;
+use App\Model\CRUD\CRUDShowFieldsInterface;
 use App\Repository\PointRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=PointRepository::class)
  */
-class Point
+class Point implements CRUDShowFieldsInterface
 {
     /**
      * @ORM\Id
@@ -97,5 +98,19 @@ class Point
         $this->address = $address;
 
         return $this;
+    }
+
+    public function getFullAddress(): string
+    {
+        return \sprintf('%s, %s', $this->getCity(), $this->getAddress());
+    }
+
+    public function getTableFields(): array
+    {
+        return [
+            'id'        => $this->getId(),
+            'city'      => $this->getCity(),
+            'address'   => $this->getAddress(),
+        ];
     }
 }

@@ -1,0 +1,23 @@
+{% extends "@admin/base.html.twig" %}
+
+{% block body %}
+    <div class="h1 mt-5 mb-5 text-center">Are you sure?</div>
+    <div class="row text-center">
+        <div class="col-6 text-end">
+            <a href="{{ path(cancelRouteName) }}" class="btn btn-primary">
+                <i class="fas fa-long-arrow-alt-left"></i> Cancel
+            </a>
+        </div>
+        <div class="col-6 text-start">
+            {{ form_start(form) }}
+
+            {{ form_widget(form.children.submit, {
+                'attr': {'class': "btn btn-danger"},
+                'label_html': true,
+                'label': '<i class="fas fa-trash-alt"></i> ' ~ form.children.submit.vars.label
+            }) }}
+
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

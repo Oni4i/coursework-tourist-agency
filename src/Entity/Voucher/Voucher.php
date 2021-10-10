@@ -2,7 +2,10 @@
 
 namespace App\Entity\Voucher;
 
+use App\Entity\Order\Order;
 use App\Repository\VoucherRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -41,6 +44,16 @@ class Voucher
      * @ORM\Column(type="string", length=255)
      */
     private $toPlace;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="voucher")
+     */
+    private $orders;
+
+    public function __construct()
+    {
+        $this->orders = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -103,6 +116,36 @@ class Voucher
     public function setToPlace(string $toPlace): self
     {
         $this->toPlace = $toPlace;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setVoucher($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getVoucher() === $this) {
+                $order->setVoucher(null);
+            }
+        }
 
         return $this;
     }

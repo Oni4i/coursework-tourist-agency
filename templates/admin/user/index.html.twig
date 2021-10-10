@@ -1,53 +1,7 @@
-{% extends "@admin/base.html.twig" %}
-
-{% block stylesheets %}
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
-{% endblock %}
-
-{% block javascript %}
-    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
-
-    <script>
-        $(document).ready( function () {
-        $('#table').DataTable();
-    } );
-    </script>
-{% endblock %}
-
-{% block body %}
-    {% set lastAction = app.session.flashBag.get('lastAction') %}
-
-    {% if lastAction is not empty %}
-        {% if lastAction.status == 200 %}
-            <h1 style="color: green">{{ lastAction.message }}</h1>
-        {% endif %}
-    {% endif %}
-
-
-    <a href="{{ path("user_create") }}" class="btn btn-success mt-5 mb-5">Создать пользователя</a>
-    <div style="max-width: 1200px">
-        <table id="table" class="display table table-striped table-bordered">
-            <thead>
-            <tr>
-                <th>First name</th>
-                <th>Last name</th>
-                <th>Username</th>
-                <th>Action</th>
-            </tr>
-            <tbody>
-            {% for user in users %}
-                <tr>
-                    <td>{{ user.firstName }}</td>
-                    <td>{{ user.lastName }}</td>
-                    <td>{{ user.username }}</td>
-                    <td>
-                        <a href="{{ path("user_remove", {id: user.id}) }}" class="btn btn-danger">Remove</a>
-                        <a href="{{ path("user_update", {id: user.id}) }}" class="btn btn-warning">Update</a>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            </thead>
-        </table>
-    </div>
-{% endblock %}
+{% include "@admin/components/crud/crud-index.html.twig" with {
+    target: "user",
+    entities: users,
+    createRouteName: "user_create",
+    removeRouteName: "user_remove",
+    updateRouteName: "user_update"
+} %}

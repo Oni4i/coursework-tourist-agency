@@ -1,1 +1,4 @@
-{{ form(form) }}
+{% include "@admin/components/crud/crud-create.html.twig" with {
+    form: form,
+    cancelRouteName: "point_index"
+} %}

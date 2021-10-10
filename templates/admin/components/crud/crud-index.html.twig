@@ -1,0 +1,59 @@
+{% extends "@admin/base.html.twig" %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.3/css/jquery.dataTables.css">
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.11.3/js/jquery.dataTables.js"></script>
+
+    <script>
+        $(document).ready( function () {
+            $('#table').DataTable();
+        } );
+    </script>
+{% endblock %}
+
+{% block body %}
+    {% set lastAction = app.session.flashBag.get('lastAction') %}
+
+    <a href="{{ path(createRouteName) }}" class="btn btn-success mt-5 mb-5">Create {{ target }}</a>
+
+    {% if lastAction is not empty %}
+        {% if lastAction.status == 200 %}
+            <div class="alert alert-success" role="alert">
+                {{ lastAction.message }}
+            </div>
+        {% endif %}
+    {% endif %}
+
+
+    {% if entities|length > 0 %}
+        <div>
+            <table id="table" class="display table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        {% for key, field in entities[0].tableFields %}
+                            <th>{{ key }}</th>
+                        {% endfor %}
+
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for entitie in entities %}
+                    <tr>
+                        {% for value in entitie.tableFields %}
+                            <td>{{ value }}</td>
+                        {% endfor %}
+                        <td>
+                            <a href="{{ path(removeRouteName, {id: entitie.id}) }}" class="btn btn-danger">Remove</a>
+                            <a href="{{ path(updateRouteName, {id: entitie.id}) }}" class="btn btn-warning">Update</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+{% endblock %}

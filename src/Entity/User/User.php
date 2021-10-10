@@ -3,18 +3,20 @@
 namespace App\Entity\User;
 
 use App\Entity\Customer\Customer;
+use App\Entity\Order\Order;
 use App\Entity\Point\Point;
-use App\Repository\UserRepository;
+use App\Model\CRUD\CRUDShowFieldsInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use App\Repository\UserRepository;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
  */
-class User implements UserInterface, PasswordAuthenticatedUserInterface
+class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDShowFieldsInterface
 {
     /**
      * @ORM\Id
@@ -51,7 +53,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity=Point::class, inversedBy="users")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(name="point_id", referencedColumnName="id",  onDelete="SET NULL")
      */
     private $point;
 
@@ -60,9 +62,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $customers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Order::class, mappedBy="user")
+     */
+    private $orders;
+
     public function __construct()
     {
         $this->customers = new ArrayCollection();
+        $this->orders = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -208,6 +216,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             // set the owning side to null (unless already changed)
             if ($customer->getCreatedByUser() === $this) {
                 $customer->setCreatedByUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return \sprintf('%s %s', $this->getFirstName(), $this->getLastName());
+    }
+
+    public function getTableFields(): array
+    {
+        return [
+            'id'        => $this->getId(),
+            'username'  => $this->getUserIdentifier(),
+            'full name' => $this->getFullName(),
+            'point'     => $this->getPoint() ? $this->getPoint()->getFullAddress() : 'Is not related',
+            'customers' => \count($this->getCustomers()),
+        ];
+    }
+
+    /**
+     * @return Collection|Order[]
+     */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders[] = $order;
+            $order->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrder(Order $order): self
+    {
+        if ($this->orders->removeElement($order)) {
+            // set the owning side to null (unless already changed)
+            if ($order->getUser() === $this) {
+                $order->setUser(null);
             }
         }
 

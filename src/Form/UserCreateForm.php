@@ -52,19 +52,8 @@ class UserCreateForm extends AbstractType
                 },
                 'required'  => true,
             ])
-            ->add('cancel', ButtonType::class, [
-                'label'     => 'Cancel',
-                'attr'      => [
-                    'href'      => $this->router->generate('user_index'),
-                    'onClick'   => 'window.location = this.getAttribute("href")',
-                    'class' => 'btn btn-danger'
-                ]
-            ])
             ->add('submit', SubmitType::class, [
                 'label'     => 'Create',
-                'attr'      => [
-                    'class' => 'btn btn-success'
-                ]
             ]);
     }
 
