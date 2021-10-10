@@ -56,6 +56,11 @@ class Voucher implements CRUDShowFieldsInterface
      */
     private $additional = [];
 
+    /**
+     * @ORM\Column(type="text")
+     */
+    private $description;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -147,7 +152,6 @@ class Voucher implements CRUDShowFieldsInterface
     public function removeOrder(Order $order): self
     {
         if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
             if ($order->getVoucher() === $this) {
                 $order->setVoucher(null);
             }
@@ -168,15 +172,28 @@ class Voucher implements CRUDShowFieldsInterface
         return $this;
     }
 
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): self
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
     public function getTableFields(): array
     {
         return [
-            'id' => $this->getId(),
-            'title' => $this->getTitle(),
-            'active?' => $this->getIsActive() ? 'true' : 'false',
-            'price' => $this->getPrice(),
-            'from' => $this->getFromPlace(),
-            'to' => $this->getToPlace(),
+            'id'            => $this->getId(),
+            'title'         => $this->getTitle(),
+            'description'   => $this->getDescription(),
+            'active?'       => $this->getIsActive() ? 'true' : 'false',
+            'price'         => $this->getPrice(),
+            'from'          => $this->getFromPlace(),
+            'to'            => $this->getToPlace(),
         ];
     }
 }

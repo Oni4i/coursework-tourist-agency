@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Voucher\Voucher;
 use App\Form\RemoveForm;
+use App\Form\VoucherCreateForm;
 use App\Form\VoucherUpdateForm;
 use App\Model\FlashMessage\LastActionFlashMessage;
 use Doctrine\ORM\EntityManagerInterface;
@@ -21,7 +22,6 @@ class VoucherController extends AbstractController
     private EntityManagerInterface $entityManager;
     private LastActionFlashMessage $flashMessage;
     private FlashBagInterface $flashBag;
-
 
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -41,7 +41,7 @@ class VoucherController extends AbstractController
     {
         $voucher = new Voucher();
 
-        $form = $this->createForm(VoucherUpdateForm::class, $voucher);
+        $form = $this->createForm(VoucherCreateForm::class, $voucher);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

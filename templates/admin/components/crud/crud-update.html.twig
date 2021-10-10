@@ -9,20 +9,5 @@
         </div>
     </div>
 
-    {{ form_start(form) }}
-    {% for child in form.children|filter((value, key) => not value.rendered and key not in ["_token", "submit"]) %}
-        <div class="form-group">
-            {{ form_label(child) }}
-            {{ form_widget(child, {'attr': {'class': "form-control"}}) }}
-            {{ form_help(child) }}
-            {{ form_errors(child) }}
-        </div>
-    {% endfor %}
-
-    {{ form_widget(form.children.submit, {
-        'attr': {'class': "btn btn-success mt-3"},
-        'label_html': true,
-        'label': '<i class="fas fa-check"></i> ' ~ form.children.submit.vars.label
-    }) }}
-    {{ form_end(form) }}
+    {{ form(form) }}
 {% endblock %}
