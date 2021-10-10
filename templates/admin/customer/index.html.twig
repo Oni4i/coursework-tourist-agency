@@ -1,0 +1,7 @@
+{% include "@admin/components/crud/crud-index.html.twig" with {
+    target: "customer",
+    entities: customers,
+    createRouteName: "customer_create",
+    removeRouteName: "customer_remove",
+    updateRouteName: "customer_update"
+} %}

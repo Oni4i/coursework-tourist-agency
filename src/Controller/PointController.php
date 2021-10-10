@@ -30,7 +30,7 @@ class PointController extends AbstractController
         FlashBagInterface $flashBag
     )
     {
-        $this->entityManager = $entityManager;
+        $this->entityManager    = $entityManager;
         $this->flashMessage     = $flashMessage;
         $this->flashBag         = $flashBag;
     }
@@ -38,9 +38,7 @@ class PointController extends AbstractController
     /**
      * @Route("/create", name="point_create")
      */
-    public function create(
-        Request $request
-    ): Response
+    public function create(Request $request): Response
     {
         $point = new Point();
 

@@ -33,16 +33,28 @@ class UserUpdateForm extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'required'  => true,
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('lastName', TextType::class, [
                 'required'  => true,
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('username', TextType::class, [
                 'required'  => true,
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('password', TextType::class, [
                 'data'      => '',
                 'required'  => true,
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('point', EntityType::class, [
                 'class'     => Point::class,
@@ -50,9 +62,15 @@ class UserUpdateForm extends AbstractType
                     return $point->getFullAddress();
                 },
                 'required'  => true,
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label'     => 'Update',
+                'attr'      => [
+                    'class' => 'btn-success'
+                ],
             ]);
     }
 

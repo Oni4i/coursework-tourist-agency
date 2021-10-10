@@ -5,14 +5,16 @@ namespace App\Entity\Order;
 use App\Entity\Customer\Customer;
 use App\Entity\User\User;
 use App\Entity\Voucher\Voucher;
+use App\Model\CRUD\CRUDShowFieldsInterface;
 use App\Repository\OrderRepository;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=OrderRepository::class)
  * @ORM\Table(name="`order`")
+ * @ORM\HasLifecycleCallbacks
  */
-class Order
+class Order implements CRUDShowFieldsInterface
 {
     /**
      * @ORM\Id
@@ -95,5 +97,23 @@ class Order
         $this->voucher = $voucher;
 
         return $this;
+    }
+
+    /**
+     * @ORM\PrePersist
+     */
+    public function onPrePersist()
+    {
+        $this->createdAt = new \DateTimeImmutable();
+    }
+
+    public function getTableFields(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'customer' => $this->getCustomer()->getFullName(),
+            'voucher' => $this->getVoucher()->getTitle(),
+            'created by' => $this->getUser()->getFullName(),
+        ];
     }
 }

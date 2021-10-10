@@ -33,17 +33,29 @@ class UserCreateForm extends AbstractType
         $builder
             ->add('firstName', TextType::class, [
                 'required'  => true,
+                'attr'      => [
+                    'class' => 'form-control'
+                ]
             ])
             ->add('lastName', TextType::class, [
                 'required'  => true,
+                'attr'      => [
+                    'class' => 'form-control'
+                ]
             ])
             ->add('username', TextType::class, [
                 'data'      => $this->getGeneratedUserLogin(),
                 'required'  => true,
+                'attr'      => [
+                    'class' => 'form-control'
+                ]
             ])
             ->add('password', TextType::class, [
                 'data'      => $this->getGeneratedPassword(),
                 'required'  => true,
+                'attr'      => [
+                    'class' => 'form-control'
+                ]
             ])
             ->add('point', EntityType::class, [
                 'class'     => Point::class,
@@ -51,9 +63,15 @@ class UserCreateForm extends AbstractType
                     return \sprintf('%s, %s', $point->getCity(), $point->getAddress());
                 },
                 'required'  => true,
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label'     => 'Create',
+                'attr'      => [
+                    'class' => 'btn-success'
+                ],
             ]);
     }
 

@@ -4,6 +4,7 @@ namespace App\Entity\Customer;
 
 use App\Entity\Order\Order;
 use App\Entity\User\User;
+use App\Model\CRUD\CRUDShowFieldsInterface;
 use App\Repository\CustomerRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,7 +13,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=CustomerRepository::class)
  */
-class Customer
+class Customer implements CRUDShowFieldsInterface
 {
     /**
      * @ORM\Id
@@ -31,6 +32,16 @@ class Customer
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="customer")
      */
     private $orders;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $firstName;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $lastName;
 
     public function __construct()
     {
@@ -82,5 +93,43 @@ class Customer
         }
 
         return $this;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $firstName): self
+    {
+        $this->firstName = $firstName;
+
+        return $this;
+    }
+
+    public function getLastName(): ?string
+    {
+        return $this->lastName;
+    }
+
+    public function setLastName(string $lastName): self
+    {
+        $this->lastName = $lastName;
+
+        return $this;
+    }
+
+    public function getFullName(): string
+    {
+        return \sprintf('%s %s', $this->getFirstName(), $this->getLastName());
+    }
+
+    public function getTableFields(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'full name' => $this->getFullName(),
+            'orders' => count($this->orders),
+        ];
     }
 }

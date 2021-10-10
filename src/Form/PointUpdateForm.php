@@ -16,12 +16,21 @@ class PointUpdateForm extends AbstractType
         $builder
             ->add('city', TextType::class, [
                 'required'  => true,
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('address', TextType::class, [
                 'required'  => true,
+                'attr'  => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label'     => 'Update',
+                'attr'  => [
+                    'class' => 'btn-success',
+                ],
             ]);
     }
 

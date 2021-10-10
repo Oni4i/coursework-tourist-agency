@@ -13,6 +13,9 @@ class RemoveForm extends AbstractType
     {
         $builder->add('submit', SubmitType::class, [
             'label' => 'Remove',
+            'attr'  => [
+                'class' => 'btn-danger',
+            ],
         ]);
     }
 

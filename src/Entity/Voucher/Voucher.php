@@ -3,6 +3,7 @@
 namespace App\Entity\Voucher;
 
 use App\Entity\Order\Order;
+use App\Model\CRUD\CRUDShowFieldsInterface;
 use App\Repository\VoucherRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -11,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * @ORM\Entity(repositoryClass=VoucherRepository::class)
  */
-class Voucher
+class Voucher implements CRUDShowFieldsInterface
 {
     /**
      * @ORM\Id
@@ -49,6 +50,11 @@ class Voucher
      * @ORM\OneToMany(targetEntity=Order::class, mappedBy="voucher")
      */
     private $orders;
+
+    /**
+     * @ORM\Column(type="array", nullable=true)
+     */
+    private $additional = [];
 
     public function __construct()
     {
@@ -148,5 +154,29 @@ class Voucher
         }
 
         return $this;
+    }
+
+    public function getAdditional(): ?array
+    {
+        return $this->additional;
+    }
+
+    public function setAdditional(?array $additional): self
+    {
+        $this->additional = $additional;
+
+        return $this;
+    }
+
+    public function getTableFields(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'title' => $this->getTitle(),
+            'active?' => $this->getIsActive() ? 'true' : 'false',
+            'price' => $this->getPrice(),
+            'from' => $this->getFromPlace(),
+            'to' => $this->getToPlace(),
+        ];
     }
 }
