@@ -43,6 +43,22 @@ class Customer implements CRUDShowFieldsInterface
      */
     private $lastName;
 
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $passport;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $phone;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     *
+     */
+    private $email;
+
     public function __construct()
     {
         $this->orders = new ArrayCollection();
@@ -131,5 +147,41 @@ class Customer implements CRUDShowFieldsInterface
             'full name' => $this->getFullName(),
             'orders' => count($this->orders),
         ];
+    }
+
+    public function getPassport(): ?string
+    {
+        return $this->passport;
+    }
+
+    public function setPassport(string $passport): self
+    {
+        $this->passport = $passport;
+
+        return $this;
+    }
+
+    public function getPhone(): ?string
+    {
+        return $this->phone;
+    }
+
+    public function setPhone(string $phone): self
+    {
+        $this->phone = $phone;
+
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+
+        return $this;
     }
 }
