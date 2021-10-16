@@ -2,6 +2,7 @@
 
 namespace App\Form\Components;
 
+use App\Entity\Customer\Passport;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
@@ -47,6 +48,7 @@ class PassportFormType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
+            'data_class' => Passport::class,
             'label_attr' => [
                 'class' => 'border-bottom border-dark mb-3 h6'
             ],
@@ -70,6 +72,7 @@ class PassportFormType extends AbstractType
                     'class' => 'm-auto'
                 ]
             ],
+            'by_reference' => false,
         ]);
     }
 }

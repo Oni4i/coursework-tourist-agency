@@ -44,7 +44,7 @@ class Customer implements CRUDShowFieldsInterface
     private $lastName;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="passport", length=255)
      */
     private $passport;
 
@@ -140,21 +140,12 @@ class Customer implements CRUDShowFieldsInterface
         return \sprintf('%s %s', $this->getFirstName(), $this->getLastName());
     }
 
-    public function getTableFields(): array
-    {
-        return [
-            'id' => $this->getId(),
-            'full name' => $this->getFullName(),
-            'orders' => count($this->orders),
-        ];
-    }
-
-    public function getPassport(): ?string
+    public function getPassport(): ?Passport
     {
         return $this->passport;
     }
 
-    public function setPassport(string $passport): self
+    public function setPassport(Passport $passport): self
     {
         $this->passport = $passport;
 
@@ -183,5 +174,15 @@ class Customer implements CRUDShowFieldsInterface
         $this->email = $email;
 
         return $this;
+    }
+
+    public function getTableFields(): array
+    {
+        return [
+            'id' => $this->getId(),
+            'full name' => $this->getFullName(),
+            'orders' => count($this->orders),
+            'passport' => json_encode($this->getPassport()->jsonSerialize())
+        ];
     }
 }

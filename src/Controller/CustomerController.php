@@ -116,7 +116,6 @@ class CustomerController extends AbstractController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $this->entityManager->flush();
 
             $this->flashBag->set(...$this->flashMessage->getSuccessData(
