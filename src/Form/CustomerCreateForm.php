@@ -3,9 +3,11 @@
 namespace App\Form;
 
 use App\Entity\Customer\Customer;
+use App\Form\Components\ContactForm;
+use App\Form\Components\FirstLastNameForm;
+use App\Form\Components\PassportFormType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -14,24 +16,20 @@ class CustomerCreateForm extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('firstName', TextType::class, [
-                'label' => 'First name',
-                'required' => true,
-                'attr'  => [
-                    'class' => 'form-control',
-                ],
+            ->add('name', FirstLastNameForm::class, [
+                'data_class' => Customer::class,
             ])
-            ->add('lastName', TextType::class, [
-                'label' => 'Last name',
-                'attr' => [
-                    'class' => 'form-control',
-                ],
+            ->add('contacts', ContactForm::class, [
+                'data_class' => Customer::class,
+            ])
+            ->add('passport', PassportFormType::class, [
+                'label' => 'Passport data',
             ])
             ->add('submit', SubmitType::class, [
                 'label' => 'Create',
                 'attr' => [
-                    'class' => 'btn-success'
-                ]
+                    'class' => 'btn-success',
+                ],
             ]);
     }
 
