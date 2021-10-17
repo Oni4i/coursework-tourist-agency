@@ -6,6 +6,7 @@ namespace App\Entity\User;
 
 interface UserRolesInterface
 {
+    const ROLE_GUEST        = 'ROLE_GUEST';
     const ROLE_USER         = 'ROLE_USER';
     const ROLE_ADMIN        = 'ROLE_ADMIN';
     const ROLE_SUPER_ADMIN  = 'ROLE_SUPER_ADMIN';

@@ -4,6 +4,7 @@ namespace App\Service;
 
 use App\Entity\User\User;
 use App\Entity\User\UserRolesInterface;
+use App\Model\SidebarNavigation\AbstractSidebarNavigation;
 use App\Repository\UserRepository;
 use Symfony\Component\Security\Core\Security;
 
@@ -55,5 +56,16 @@ class UserManager
         $userSupremeRoleIndex = \array_search($userSupremeRole, $roles);
 
         return \array_slice($roles, $userSupremeRoleIndex + 1);
+    }
+
+    /**
+     * Get navigation items for sidebar (maybe later I will improve this)
+     */
+    public function getNavigationItems(): array
+    {
+        /** @var User $user */
+        $user = $this->security->getUser();
+
+        return AbstractSidebarNavigation::getRoutesByRole($user ? $user->getSupremeRole() : UserRolesInterface::ROLE_GUEST);
     }
 }
