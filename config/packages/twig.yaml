@@ -3,6 +3,7 @@ twig:
 
     paths:
         '%kernel.project_dir%/templates/admin': 'admin'
+        '%kernel.project_dir%/templates/guest': 'guest'
 
 
     form_themes: [ 'bootstrap_5_layout.html.twig' ]
