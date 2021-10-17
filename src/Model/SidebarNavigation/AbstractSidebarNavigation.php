@@ -24,7 +24,7 @@ abstract class AbstractSidebarNavigation
             'icon_class' => 'fas fa-suitcase',
         ],
         'order_index' => [
-            'label' => 'Vouchers',
+            'label' => 'Orders',
             'icon_class' => 'fas fa-clipboard-list',
         ],
     ];
@@ -51,7 +51,7 @@ abstract class AbstractSidebarNavigation
         $items = [];
 
         foreach ($routes as $route) {
-            $items[] = self::ROUTES[$route];
+            $items[$route] = self::ROUTES[$route];
         }
 
         return $items;
