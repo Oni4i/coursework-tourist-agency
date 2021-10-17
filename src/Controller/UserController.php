@@ -7,6 +7,7 @@ use App\Form\RemoveForm;
 use App\Form\UserCreateForm;
 use App\Form\UserUpdateForm;
 use App\Model\FlashMessage\LastActionFlashMessage;
+use App\Service\UserManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,25 +24,28 @@ class UserController extends AbstractController
     private EntityManagerInterface $entityManager;
     private LastActionFlashMessage $flashMessage;
     private FlashBagInterface $flashBag;
+    private UserManager $userManager;
+    private UserPasswordHasherInterface $passwordHasher;
 
     public function __construct(
         EntityManagerInterface $entityManager,
         LastActionFlashMessage $flashMessage,
-        FlashBagInterface $flashBag
+        FlashBagInterface $flashBag,
+        UserManager $userManager,
+        UserPasswordHasherInterface $passwordHasher
     )
     {
         $this->entityManager    = $entityManager;
         $this->flashMessage     = $flashMessage;
         $this->flashBag         = $flashBag;
+        $this->userManager      = $userManager;
+        $this->passwordHasher   = $passwordHasher;
     }
 
     /**
      * @Route("/create", name="user_create")
      */
-    public function create(
-        Request $request,
-        UserPasswordHasherInterface $passwordHasher
-    ): Response
+    public function create(Request $request): Response
     {
         $user = new User();
 
@@ -49,7 +53,7 @@ class UserController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hashedPassword = $passwordHasher->hashPassword($user, $form->get('password')->getData());
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $form->get('password')->getData());
 
             $user->setPassword($hashedPassword);
 
@@ -103,7 +107,7 @@ class UserController extends AbstractController
     /**
      * @Route("/update/{id}", name="user_update", requirements={"id"="\d+"})
      */
-    public function update(Request $request, int $id, UserPasswordHasherInterface $passwordHasher): Response
+    public function update(Request $request, int $id): Response
     {
         /** @var User|null $user */
         $user = $this->entityManager->getRepository(User::class)->find($id);
@@ -111,12 +115,12 @@ class UserController extends AbstractController
         $form = $this->createForm(UserUpdateForm::class, $user);
         $form->handleRequest($request);
 
-        if (!$user) {
+        if (!$this->userManager->canUpdateUser($user)) {
             throw $this->createNotFoundException('The user not found');
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $hashedPassword = $passwordHasher->hashPassword($user, $form->get('password')->getData());
+            $hashedPassword = $this->passwordHasher->hashPassword($user, $form->get('password')->getData());
 
             $user->setPassword($hashedPassword);
 
@@ -141,7 +145,7 @@ class UserController extends AbstractController
     public function index(): Response
     {
         return $this->render('@admin/user/index.html.twig', [
-            'users' => $this->entityManager->getRepository(User::class)->findAll(),
+            'users' => $this->userManager->getAllowedUsers(),
         ]);
     }
 }

@@ -33,7 +33,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
     /**
      * @ORM\Column(type="json")
      */
-    private $roles = [];
+    private $roles = [UserRolesInterface::ROLE_USER];
 
     /**
      * @var string The hashed password
@@ -116,7 +116,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
 
     public function setRoles(array $roles): self
     {
-        $this->roles = $roles;
+        $roles[] = UserRolesInterface::ROLE_USER;
+        $this->roles = array_unique($roles);
 
         return $this;
     }
@@ -266,5 +267,16 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
         }
 
         return $this;
+    }
+
+    public function getSupremeRole(): string
+    {
+        foreach (UserRolesInterface::ROLES_BY_HIERARCHY as $role) {
+            if (\in_array($role, $this->getRoles())) {
+                return $role;
+            }
+        }
+
+        return UserRolesInterface::ROLE_USER;
     }
 }

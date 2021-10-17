@@ -25,7 +25,7 @@ class PassportType extends JsonType
 
     public function getName()
     {
-        return self::TYPE; // modify to match your constant name
+        return self::TYPE;
     }
 
 }
