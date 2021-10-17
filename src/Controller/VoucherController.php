@@ -47,6 +47,8 @@ class VoucherController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($voucher);
             $this->entityManager->flush();
+
+            return $this->redirectToRoute('voucher_index');
         }
 
         return $this->render('@admin/voucher/create.html.twig', [

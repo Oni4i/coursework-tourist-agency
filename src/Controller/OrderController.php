@@ -53,6 +53,8 @@ class OrderController extends AbstractController
 
             $this->entityManager->persist($order);
             $this->entityManager->flush();
+
+            return $this->redirectToRoute('order_index');
         }
 
         return $this->render('@admin/order/create.html.twig', [

@@ -53,6 +53,8 @@ class CustomerController extends AbstractController
 
             $this->entityManager->persist($customer);
             $this->entityManager->flush();
+
+            return $this->redirectToRoute('customer_index');
         }
 
         return $this->render('@admin/customer/create.html.twig', [

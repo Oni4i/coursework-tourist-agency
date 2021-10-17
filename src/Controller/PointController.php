@@ -48,6 +48,8 @@ class PointController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->entityManager->persist($point);
             $this->entityManager->flush();
+
+            return $this->redirectToRoute('point_index');
         }
 
         return $this->render('@admin/point/create.html.twig', [
