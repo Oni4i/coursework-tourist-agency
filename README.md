@@ -17,3 +17,10 @@ You can use either apache or nginx. If you use nginx you can remove .htaccess in
 2. Set start directory as public/
 3. Exec `composer install`
 4. Exec `php bin/console doctrine:migrations:migrate`
+
+
+### LOGIN:
+
+login: admin
+
+password: admin
