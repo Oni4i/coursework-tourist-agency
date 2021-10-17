@@ -34,7 +34,6 @@ abstract class AbstractSidebarNavigation
         UserRolesInterface::ROLE_ADMIN => ['*'],
         UserRolesInterface::ROLE_USER => [
             'customer_index',
-            'voucher_index',
             'order_index'
         ],
         UserRolesInterface::ROLE_GUEST => []
