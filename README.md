@@ -1,4 +1,4 @@
-## This is simple CRUD coursework for university on Symfony 5.
+## This is simple CRUD coursework for university on Symfony 5 (Still improving).
 
 ### Stack:
 
