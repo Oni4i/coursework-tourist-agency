@@ -22,13 +22,9 @@ class UserManager
         $this->userRepository   = $userRepository;
     }
 
-    public function canUpdateUser(?User $user): bool
+    public function canUpdateUser(User $user): bool
     {
-        return $user
-            && (
-                !\in_array(UserRolesInterface::ROLE_ADMIN, $user->getRoles())
-                || $user === $this->security->getUser()
-            );
+        return !\in_array(UserRolesInterface::ROLE_ADMIN, $user->getRoles()) || $user === $this->security->getUser();
     }
 
     /**

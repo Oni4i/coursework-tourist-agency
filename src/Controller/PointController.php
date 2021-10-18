@@ -37,6 +37,10 @@ class PointController extends AbstractController
 
     /**
      * @Route("/create", name="point_create")
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function create(Request $request): Response
     {
@@ -59,6 +63,8 @@ class PointController extends AbstractController
 
     /**
      * @Route("/", name="point_index")
+     *
+     * @return Response
      */
     public function index(): Response
     {
@@ -69,6 +75,11 @@ class PointController extends AbstractController
 
     /**
      * @Route("/remove/{id}", name="point_remove", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return Response
      */
     public function remove(Request $request, int $id): Response
     {
@@ -101,6 +112,11 @@ class PointController extends AbstractController
 
     /**
      * @Route("/update/{id}", name="point_update", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return Response
      */
     public function update(Request $request, int $id): Response
     {

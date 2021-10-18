@@ -38,6 +38,10 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/create", name="order_create")
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function create(Request $request): Response
     {
@@ -64,6 +68,8 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/", name="order_index")
+     *
+     * @return Response
      */
     public function index(): Response
     {
@@ -74,6 +80,11 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/remove/{id}", name="order_remove", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return Response
      */
     public function remove(Request $request, int $id): Response
     {
@@ -105,6 +116,11 @@ class OrderController extends AbstractController
 
     /**
      * @Route("/update/{id}", name="order_update", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return Response
      */
     public function update(Request $request, int $id): Response
     {

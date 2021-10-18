@@ -38,6 +38,10 @@ class CustomerController extends AbstractController
 
     /**
      * @Route("/create", name="customer_create")
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function create(Request $request): Response
     {
@@ -64,6 +68,10 @@ class CustomerController extends AbstractController
 
     /**
      * @Route("/", name="customer_index")
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function index(): Response
     {
@@ -74,6 +82,11 @@ class CustomerController extends AbstractController
 
     /**
      * @Route("/remove/{id}", name="customer_remove", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return Response
      */
     public function remove(Request $request, int $id): Response
     {
@@ -105,6 +118,11 @@ class CustomerController extends AbstractController
 
     /**
      * @Route("/update/{id}", name="customer_update", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return Response
      */
     public function update(Request $request, int $id): Response
     {

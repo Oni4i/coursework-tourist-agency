@@ -44,6 +44,10 @@ class UserController extends AbstractController
 
     /**
      * @Route("/create", name="user_create")
+     *
+     * @param Request $request
+     *
+     * @return Response
      */
     public function create(Request $request): Response
     {
@@ -74,6 +78,11 @@ class UserController extends AbstractController
 
     /**
      * @Route("/remove/{id}", name="user_remove", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return Response
      */
     public function remove(Request $request, int $id): Response
     {
@@ -106,18 +115,27 @@ class UserController extends AbstractController
 
     /**
      * @Route("/update/{id}", name="user_update", requirements={"id"="\d+"})
+     *
+     * @param Request $request
+     * @param int     $id
+     *
+     * @return Response
      */
     public function update(Request $request, int $id): Response
     {
         /** @var User|null $user */
         $user = $this->entityManager->getRepository(User::class)->find($id);
 
-        $form = $this->createForm(UserUpdateForm::class, $user);
-        $form->handleRequest($request);
-
-        if (!$this->userManager->canUpdateUser($user)) {
+        if ($user) {
             throw $this->createNotFoundException('The user not found');
         }
+
+        if (!$this->userManager->canUpdateUser($user)) {
+            throw $this->createNotFoundException('You can not update this row');
+        }
+
+        $form = $this->createForm(UserUpdateForm::class, $user);
+        $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hashedPassword = $this->passwordHasher->hashPassword($user, $form->get('password')->getData());
@@ -141,6 +159,8 @@ class UserController extends AbstractController
 
     /**
      * @Route("/", name="user_index")
+     *
+     * @return Response
      */
     public function index(): Response
     {
