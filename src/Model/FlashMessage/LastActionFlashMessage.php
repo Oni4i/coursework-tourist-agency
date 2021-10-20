@@ -1,9 +1,10 @@
 <?php
 
-
 namespace App\Model\FlashMessage;
 
-
+/**
+ * Class for showing flash messages
+ */
 class LastActionFlashMessage
 {
     const ACTION_REMOVE = 'removed';
@@ -16,6 +17,14 @@ class LastActionFlashMessage
         self::ACTION_UPDATE,
     ];
 
+    /**
+     * Showing success message
+     *
+     * @param string $action
+     * @param string $target
+     *
+     * @return array
+     */
     public function getSuccessData(string $action, string $target): array
     {
         return [
@@ -27,6 +36,14 @@ class LastActionFlashMessage
         ];
     }
 
+    /**
+     * Showing error message
+     *
+     * @param string $action
+     * @param string $target
+     *
+     * @return array
+     */
     public function getErrorData(string $action, string $target): array
     {
         return [

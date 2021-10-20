@@ -13,34 +13,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderCreateForm extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('customer', EntityType::class, [
-                'class' => Customer::class,
-                'choice_label' => static function (Customer $customer) {
-                    return \sprintf('%d. %s', $customer->getId(), $customer->getFullName());
+                'class'         => Customer::class,
+                'choice_label'  => static function (Customer $customer) {
+                    return $customer->getChoiceLabel();
                 },
             ])
             ->add('voucher', EntityType::class, [
-                'class' => Voucher::class,
-                'choice_label' => static function (Voucher $voucher) {
-                    return \sprintf(
-                        '%s. %s - %s',
-                        $voucher->getTitle(),
-                        $voucher->getFromPlace(),
-                        $voucher->getToPlace()
-                    );
-                }
+                'class'         => Voucher::class,
+                'choice_label'  => static function (Voucher $voucher) {
+                    return $voucher->getChoiceLabel();
+                },
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Create',
-                'attr' => [
-                    'class' => 'btn-success'
-                ]
+                'label'         => 'Create',
+                'attr'          => [
+                    'class' => 'btn-success',
+                ],
             ]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

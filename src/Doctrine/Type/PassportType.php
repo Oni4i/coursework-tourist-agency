@@ -10,6 +10,9 @@ class PassportType extends JsonType
 {
     const TYPE = 'passport';
 
+    /**
+     * @inheritDoc
+     */
     public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         $passport = new Passport();
@@ -18,11 +21,17 @@ class PassportType extends JsonType
         return $passport;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function requiresSQLCommentHint(AbstractPlatform $platform)
     {
         return true;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getName()
     {
         return self::TYPE;

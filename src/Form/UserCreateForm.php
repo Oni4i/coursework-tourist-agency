@@ -19,6 +19,10 @@ class UserCreateForm extends AbstractType
     private UserRepository $userRepository;
     private RouterInterface $router;
 
+    /**
+     * @param UserRepository $userRepository
+     * @param RouterInterface $router
+     */
     public function __construct(
         UserRepository $userRepository,
         RouterInterface $router
@@ -28,49 +32,67 @@ class UserCreateForm extends AbstractType
         $this->router           = $router;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    /**
+     * @inheritDoc
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', FirstLastNameForm::class, [
-                'data_class' => User::class,
+                'data_class'    => User::class,
             ])
             ->add('username', TextType::class, [
-                'data'      => $this->getGeneratedUserLogin(),
-                'required'  => true,
-                'attr'      => [
-                    'class' => 'form-control'
-                ]
+                'data'          => $this->getGeneratedUserLogin(),
+                'required'      => true,
+                'attr'          => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('password', TextType::class, [
-                'data'      => $this->getGeneratedPassword(),
-                'required'  => true,
-                'attr'      => [
-                    'class' => 'form-control'
-                ]
+                'data'          => $this->getGeneratedPassword(),
+                'required'      => true,
+                'attr'          => [
+                    'class' => 'form-control',
+                ],
             ])
             ->add('point', EntityType::class, [
-                'class'     => Point::class,
-                'choice_label' => static function (Point $point) {
-                    return \sprintf('%s, %s', $point->getCity(), $point->getAddress());
+                'class'         => Point::class,
+                'choice_label'  => static function (Point $point) {
+                    return \sprintf(
+                        '%s, %s',
+                        $point->getCity(),
+                        $point->getAddress()
+                    );
                 },
-                'required'  => true,
-                'attr'  => [
+                'required'      => true,
+                'attr'          => [
                     'class' => 'form-control',
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'label'     => 'Create',
-                'attr'      => [
-                    'class' => 'btn-success'
+                'label'         => 'Create',
+                'attr'          => [
+                    'class'     => 'btn-success',
                 ],
-            ]);
+            ])
+        ;
     }
 
+    /**
+     * Generate random login (optional)
+     *
+     * @return string
+     */
     public function getGeneratedUserLogin(): string
     {
         return \sprintf('user_%d', \strtotime('now'));
     }
 
+    /**
+     * Generate random password (optional)
+     *
+     * @return string
+     */
     public function getGeneratedPassword(): string
     {
         return \sprintf(
@@ -80,6 +102,9 @@ class UserCreateForm extends AbstractType
         );
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

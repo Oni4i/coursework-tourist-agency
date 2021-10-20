@@ -10,6 +10,9 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ContactForm extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         if ($options['include_phone']) {
@@ -19,7 +22,8 @@ class ContactForm extends AbstractType
                     'class' => 'phone-type',
                 ],
                 'row_attr' => $options['fields_row_attr']['phone'],
-            ]);
+            ])
+            ;
         }
 
         if ($options['include_email']) {
@@ -29,20 +33,24 @@ class ContactForm extends AbstractType
                     'class' => 'email-type',
                 ],
                 'row_attr' => $options['fields_row_attr']['email'],
-            ]);
+            ])
+            ;
         }
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'inherit_data' => true,
-            'include_phone' => true,
-            'include_email' => true,
-            'attr' => [
+            'inherit_data'      => true,
+            'include_phone'     => true,
+            'include_email'     => true,
+            'attr'              => [
                 'class' => 'row'
             ],
-            'fields_row_attr' => [
+            'fields_row_attr'   => [
                 'phone' => [
                     'class' => 'col-6',
                 ],
@@ -50,7 +58,7 @@ class ContactForm extends AbstractType
                     'class' => 'col-6',
                 ]
             ],
-            'label' => false,
+            'label'             => false,
         ]);
     }
 }

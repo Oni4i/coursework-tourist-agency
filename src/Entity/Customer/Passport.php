@@ -130,11 +130,11 @@ class Passport implements JsonSerializable
     public function jsonSerialize(): array
     {
         return [
-            'serial' => $this->getSerial(),
-            'number' => $this->getNumber(),
-            'office' => $this->getOffice(),
-            'home'  => $this->getHome(),
-            'birthday' => $this->getBirthday(),
+            'serial'    => $this->getSerial(),
+            'number'    => $this->getNumber(),
+            'office'    => $this->getOffice(),
+            'home'      => $this->getHome(),
+            'birthday'  => $this->getBirthday(),
         ];
     }
 

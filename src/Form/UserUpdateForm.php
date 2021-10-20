@@ -19,6 +19,10 @@ class UserUpdateForm extends AbstractType
     private UserRepository $userRepository;
     private RouterInterface $router;
 
+    /**
+     * @param UserRepository $userRepository
+     * @param RouterInterface $router
+     */
     public function __construct(
         UserRepository $userRepository,
         RouterInterface $router
@@ -28,44 +32,51 @@ class UserUpdateForm extends AbstractType
         $this->router           = $router;
     }
 
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    /**
+     * @inheritDoc
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', FirstLastNameForm::class, [
-                'data_class' => User::class,
+                'data_class'    => User::class,
             ])
             ->add('username', TextType::class, [
-                'required'  => true,
-                'attr'  => [
+                'required'      => true,
+                'attr'          => [
                     'class' => 'form-control',
                 ],
             ])
             ->add('password', TextType::class, [
-                'data'      => '',
-                'required'  => true,
-                'attr'  => [
+                'data'          => '',
+                'required'      => true,
+                'attr'          => [
                     'class' => 'form-control',
                 ],
             ])
             ->add('point', EntityType::class, [
-                'class'     => Point::class,
-                'choice_label' => function (Point $point) {
+                'class'         => Point::class,
+                'choice_label'  => static function (Point $point) {
                     return $point->getFullAddress();
                 },
-                'required'  => true,
-                'attr'  => [
+                'required'      => true,
+                'attr'          => [
                     'class' => 'form-control',
                 ],
             ])
             ->add('submit', SubmitType::class, [
-                'label'     => 'Update',
-                'attr'      => [
-                    'class' => 'btn-success'
+                'label'         => 'Update',
+                'attr'          => [
+                    'class' => 'btn-success',
                 ],
-            ]);
+            ])
+        ;
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    /**
+     * @inheritDoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => User::class,

@@ -13,28 +13,30 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class OrderUpdateForm extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('customer', EntityType::class, [
-                'data_class' => Customer::class,
-                'choice_label' => static function (User $user) {
-                    return \sprintf('%d. %s', $user->getId(), $user->getFullName());
+                'data_class'    => Customer::class,
+                'choice_label'  => static function (Customer $customer) {
+                    return $customer->getChoiceLabel();
                 },
             ])
             ->add('voucher', EntityType::class, [
-                'data_class' => Voucher::class,
-                'choice_label' => static function (Voucher $voucher) {
-                    return \sprintf(
-                        '%s. %s - %s',
-                        $voucher->getTitle(),
-                        $voucher->getFromPlace(),
-                        $voucher->getToPlace()
-                    );
-                }
-            ]);
+                'data_class'    => Voucher::class,
+                'choice_label'  => static function (Voucher $voucher) {
+                    return $voucher->getChoiceLabel();
+                },
+            ])
+        ;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

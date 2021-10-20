@@ -29,7 +29,8 @@ class FirstLastNameForm extends AbstractType
                 'row_attr' => [
                     'class' => 'col-6',
                 ]
-            ]);
+            ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -190,10 +190,25 @@ class Voucher implements CRUDShowFieldsInterface
             'id'            => $this->getId(),
             'title'         => $this->getTitle(),
             'description'   => $this->getDescription(),
-            'active?'       => $this->getIsActive() ? 'true' : 'false',
+            'active?'       => $this->getIsActive() ? 'yes' : 'no',
             'price'         => $this->getPrice(),
             'from'          => $this->getFromPlace(),
             'to'            => $this->getToPlace(),
         ];
+    }
+
+    /**
+     * Generating choice label from voucher
+     *
+     * @return string
+     */
+    public function getChoiceLabel(): string
+    {
+        return \sprintf(
+            '%s. %s - %s',
+            $this->getTitle(),
+            $this->getFromPlace(),
+            $this->getToPlace()
+        );
     }
 }
