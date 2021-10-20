@@ -3,7 +3,7 @@
 namespace App\Form;
 
 use App\Entity\Voucher\Voucher;
-use App\Entity\Voucher\VoucherAdditionalInterface;
+use App\Service\VoucherManager;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -16,50 +16,62 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class VoucherUpdateForm extends AbstractType
 {
+    private VoucherManager $voucherManager;
+
+    /**
+     * @param VoucherManager $voucherManager
+     */
+    public function __construct(VoucherManager $voucherManager)
+    {
+        $this->voucherManager = $voucherManager;
+    }
+
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('title', TextType::class, [
-                'label' => 'Title',
-                'required' => true,
+                'label'     => 'Title',
+                'required'  => true,
             ])
             ->add('description', TextareaType::class, [
-                'label' => 'Description',
-                'required' => true,
+                'label'     => 'Description',
+                'required'  => true,
             ])
             ->add('additional', ChoiceType::class, [
-                'label' => 'Additional',
-                'choices' => \array_combine(
-                    \array_values(VoucherAdditionalInterface::ADDITIONS_FOR_FORMS),
-                    VoucherAdditionalInterface::ADDITIONS_FOR_FORMS
-                ),
+                'label'     => 'Additional',
+                'choices'   => $this->voucherManager->getAdditionalChoices(),
                 'multiple'  => true,
-                'expanded' => true,
-                'required' => true,
+                'expanded'  => true,
+                'required'  => true,
             ])
             ->add('isActive', CheckboxType::class, [
-                'label' => 'Active?',
-
+                'label'     => 'Active?',
             ])
             ->add('price', NumberType::class, [
-                'label' => 'Price in dollars',
+                'label'     => 'Price in dollars',
             ])
             ->add('fromPlace', TextType::class, [
-                'label' => 'From place',
+                'label'     => 'From place',
 
             ])
             ->add('toPlace', TextType::class, [
-                'label' => 'To place',
-
+                'label'     => 'To place',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Update',
-                'attr' => [
-                    'class' => 'btn-success'
-                ]
-            ]);
+                'label'     => 'Update',
+                'attr'      => [
+                    'class' => 'btn-success',
+                ],
+            ])
+        ;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

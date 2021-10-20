@@ -11,29 +11,35 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class PointUpdateForm extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('city', TextType::class, [
                 'required'  => true,
-                'attr'  => [
+                'attr'      => [
                     'class' => 'form-control',
                 ],
             ])
             ->add('address', TextType::class, [
                 'required'  => true,
-                'attr'  => [
+                'attr'      => [
                     'class' => 'form-control',
                 ],
             ])
             ->add('submit', SubmitType::class, [
                 'label'     => 'Update',
-                'attr'  => [
+                'attr'      => [
                     'class' => 'btn-success',
                 ],
             ]);
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

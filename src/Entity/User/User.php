@@ -78,12 +78,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
         return $this->id;
     }
 
-    /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     */
     public function getUsername(): string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
     public function setUsername(string $username): self
@@ -93,19 +90,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return $this->username;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
@@ -122,9 +111,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
     public function getPassword(): string
     {
         return $this->password;
@@ -137,25 +123,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
         return $this;
     }
 
-    /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
-     */
     public function getSalt(): ?string
     {
         return null;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
-    }
+    public function eraseCredentials() {}
 
     public function getFirstName(): ?string
     {
@@ -214,7 +187,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
     public function removeCustomer(Customer $customer): self
     {
         if ($this->customers->removeElement($customer)) {
-            // set the owning side to null (unless already changed)
             if ($customer->getCreatedByUser() === $this) {
                 $customer->setCreatedByUser(null);
             }
@@ -260,7 +232,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
     public function removeOrder(Order $order): self
     {
         if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
             if ($order->getUser() === $this) {
                 $order->setUser(null);
             }
@@ -269,6 +240,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, CRUDSho
         return $this;
     }
 
+    /**
+     * get highest role of the user
+     */
     public function getSupremeRole(): string
     {
         foreach (UserRolesInterface::ROLES_BY_HIERARCHY as $role) {

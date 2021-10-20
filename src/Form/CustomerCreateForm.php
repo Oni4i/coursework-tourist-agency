@@ -13,26 +13,33 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CustomerCreateForm extends AbstractType
 {
+    /**
+     * @inheritDoc
+     */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('name', FirstLastNameForm::class, [
-                'data_class' => Customer::class,
+                'data_class'    => Customer::class,
             ])
             ->add('contacts', ContactForm::class, [
-                'data_class' => Customer::class,
+                'data_class'    => Customer::class,
             ])
             ->add('passport', PassportFormType::class, [
-                'label' => 'Passport data',
+                'label'         => 'Passport data',
             ])
             ->add('submit', SubmitType::class, [
-                'label' => 'Create',
-                'attr' => [
+                'label'         => 'Create',
+                'attr'          => [
                     'class' => 'btn-success',
                 ],
-            ]);
+            ])
+        ;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([

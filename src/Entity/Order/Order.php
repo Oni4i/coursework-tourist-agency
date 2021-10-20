@@ -110,10 +110,10 @@ class Order implements CRUDShowFieldsInterface
     public function getTableFields(): array
     {
         return [
-            'id' => $this->getId(),
-            'customer' => $this->getCustomer()->getFullName(),
-            'voucher' => $this->getVoucher()->getTitle(),
-            'created by' => $this->getUser()->getFullName(),
+            'id'            => $this->getId(),
+            'customer'      => $this->getCustomer()->getFullName(),
+            'voucher'       => $this->getVoucher()->getTitle(),
+            'created by'    => $this->getUser()->getFullName(),
         ];
     }
 }

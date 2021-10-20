@@ -13,6 +13,10 @@ class UserManager
     private Security $security;
     private UserRepository $userRepository;
 
+    /**
+     * @param Security $security
+     * @param UserRepository $userRepository
+     */
     public function __construct(
         Security $security,
         UserRepository $userRepository
@@ -28,7 +32,7 @@ class UserManager
     }
 
     /**
-     * Get array of allowed to change users
+     * Get array of allowed for changing users
      *
      * @return User[]
      */
@@ -62,6 +66,8 @@ class UserManager
         /** @var User $user */
         $user = $this->security->getUser();
 
-        return AbstractSidebarNavigation::getRoutesByRole($user ? $user->getSupremeRole() : UserRolesInterface::ROLE_GUEST);
+        $role = $user ? $user->getSupremeRole() : UserRolesInterface::ROLE_GUEST;
+
+        return AbstractSidebarNavigation::getRoutesByRole($role);
     }
 }

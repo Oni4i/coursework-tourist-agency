@@ -9,7 +9,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class RemoveForm extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    /**
+     * @inheritDoc
+     */
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('submit', SubmitType::class, [
             'label' => 'Remove',
@@ -19,7 +22,10 @@ class RemoveForm extends AbstractType
         ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver): void
+    /**
+     * @inheritDoc
+     */
+    public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             'data_class' => null,

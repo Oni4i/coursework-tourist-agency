@@ -9,7 +9,7 @@ interface VoucherAdditionalInterface
 
     const ADDITIONS = [
         self::ADDITION_AIRPORT_TICKETS,
-        self::ADDITION_ALL_INCLUSIVE
+        self::ADDITION_ALL_INCLUSIVE,
     ];
 
     const ADDITIONS_FOR_FORMS = [

@@ -10,6 +10,9 @@ class NavigationExtension extends AbstractExtension
 {
     private UserManager $userManager;
 
+    /**
+     * @param UserManager $userManager
+     */
     public function __construct(
         UserManager $userManager
     )
@@ -17,6 +20,9 @@ class NavigationExtension extends AbstractExtension
         $this->userManager = $userManager;
     }
 
+    /**
+     * @inheritDoc
+     */
     public function getFunctions()
     {
         return [

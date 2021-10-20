@@ -102,7 +102,6 @@ class Customer implements CRUDShowFieldsInterface
     public function removeOrder(Order $order): self
     {
         if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
             if ($order->getCustomer() === $this) {
                 $order->setCustomer(null);
             }
@@ -179,10 +178,24 @@ class Customer implements CRUDShowFieldsInterface
     public function getTableFields(): array
     {
         return [
-            'id' => $this->getId(),
+            'id'        => $this->getId(),
             'full name' => $this->getFullName(),
-            'orders' => count($this->orders),
-            'passport' => json_encode($this->getPassport()->jsonSerialize())
+            'orders'    => \count($this->orders),
+            'passport'  => \json_encode($this->getPassport()->jsonSerialize()),
         ];
+    }
+
+    /**
+     * Generating choice label from customer
+     *
+     * @return string
+     */
+    public function getChoiceLabel(): string
+    {
+        return \sprintf(
+            '%d. %s',
+            $this->getId(),
+            $this->getFullName()
+        );
     }
 }

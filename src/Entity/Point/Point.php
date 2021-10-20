@@ -79,7 +79,6 @@ class Point implements CRUDShowFieldsInterface
     public function removeUser(User $user): self
     {
         if ($this->users->removeElement($user)) {
-            // set the owning side to null (unless already changed)
             if ($user->getPoint() === $this) {
                 $user->setPoint(null);
             }
