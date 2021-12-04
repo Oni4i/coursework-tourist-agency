@@ -126,7 +126,7 @@ class UserController extends AbstractController
         /** @var User|null $user */
         $user = $this->entityManager->getRepository(User::class)->find($id);
 
-        if ($user) {
+        if (!$user) {
             throw $this->createNotFoundException('The user not found');
         }
 
