@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class CustomerCreateForm extends AbstractType
 {
@@ -21,12 +22,18 @@ class CustomerCreateForm extends AbstractType
         $builder
             ->add('name', FirstLastNameForm::class, [
                 'data_class'    => Customer::class,
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
             ->add('contacts', ContactForm::class, [
                 'data_class'    => Customer::class,
             ])
             ->add('passport', PassportFormType::class, [
                 'label'         => 'Passport data',
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label'         => 'Create',

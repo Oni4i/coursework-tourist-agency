@@ -7,6 +7,7 @@ use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class ContactForm extends AbstractType
 {
@@ -22,6 +23,9 @@ class ContactForm extends AbstractType
                     'class' => 'phone-type',
                 ],
                 'row_attr' => $options['fields_row_attr']['phone'],
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
             ;
         }
@@ -33,6 +37,9 @@ class ContactForm extends AbstractType
                     'class' => 'email-type',
                 ],
                 'row_attr' => $options['fields_row_attr']['email'],
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
             ;
         }
@@ -48,7 +55,7 @@ class ContactForm extends AbstractType
             'include_phone'     => true,
             'include_email'     => true,
             'attr'              => [
-                'class' => 'row'
+                'class' => 'row',
             ],
             'fields_row_attr'   => [
                 'phone' => [
