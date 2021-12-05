@@ -9,6 +9,8 @@ use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class PassportFormType extends AbstractType
 {
@@ -23,23 +25,46 @@ class PassportFormType extends AbstractType
             ->add('serial', NumberType::class, [
                 'label'     => 'Serial',
                 'row_attr'  => $options['fields_row_attr']['serial'],
+                'constraints'   => [
+                    new NotNull(),
+                    new Length([
+                        'min' => 4,
+                        'max' => 4,
+                    ])
+                ],
             ])
             ->add('number', NumberType::class, [
                 'label'     => 'Number',
                 'row_attr'  => $options['fields_row_attr']['number'],
+                'constraints'   => [
+                    new NotNull(),
+                    new Length([
+                        'min' => 6,
+                        'max' => 6,
+                    ])
+                ],
             ])
             ->add('office', TextType::class, [
                 'label'     => 'Issuing office address',
                 'row_attr'  => $options['fields_row_attr']['office'],
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
             ->add('home', TextType::class, [
                 'label'     => 'Home address',
                 'row_attr'  => $options['fields_row_attr']['home'],
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
             ->add('birthday', DateType::class, [
                 'label'     => 'Birthday date',
                 'years'     => $this->getYears(),
                 'row_attr'  => $options['fields_row_attr']['office'],
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
         ;
     }

@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\NotNull;
 
 class OrderUpdateForm extends AbstractType
 {
@@ -24,12 +25,18 @@ class OrderUpdateForm extends AbstractType
                 'choice_label'  => static function (Customer $customer) {
                     return $customer->getChoiceLabel();
                 },
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
             ->add('voucher', EntityType::class, [
                 'class'         => Voucher::class,
                 'choice_label'  => static function (Voucher $voucher) {
                     return $voucher->getChoiceLabel();
                 },
+                'constraints'   => [
+                    new NotNull(),
+                ],
             ])
             ->add('submit', SubmitType::class, [
                 'label'         => 'Update',

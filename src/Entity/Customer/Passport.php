@@ -127,6 +127,21 @@ class Passport implements JsonSerializable
         return $this;
     }
 
+    public function __toString()
+    {
+        $result = '';
+
+        foreach ($this->jsonSerialize() as $key => $value) {
+            if ($value instanceof DateTime) {
+                $value = $value->format('F jS, Y');
+            }
+
+            $result .= "\"$key\" = \"$value\", ";
+        }
+
+        return \substr($result, 0, \strlen($result) - 2);
+    }
+
     public function jsonSerialize(): array
     {
         return [

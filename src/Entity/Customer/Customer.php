@@ -181,7 +181,7 @@ class Customer implements CRUDShowFieldsInterface
             'id'        => $this->getId(),
             'full name' => $this->getFullName(),
             'orders'    => \count($this->orders),
-            'passport'  => \json_encode($this->getPassport()->jsonSerialize()),
+            'passport'  => $this->getPassport(),
         ];
     }
 
